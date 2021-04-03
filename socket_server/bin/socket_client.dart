@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'server_worker.dart';
+
 void main() async {
 
+  ServerWorker serverWorker;
 
   // connect to the socket server
   final socket = await Socket.connect('localhost', 3320);
@@ -14,6 +17,7 @@ void main() async {
           (Uint8List data) {
         final serverResponse = String.fromCharCodes(data);
         print('Server: $serverResponse');
+        serverWorker.handleConnection(socket);
       },
 
       // handle errors
@@ -36,7 +40,8 @@ void main() async {
       // socket.destroy();
       return;
     }
-    await sendMessage(socket, text);
+    serverWorker.send(socket, text);
+    //await sendMessage(socket, text);
   }
 
 }

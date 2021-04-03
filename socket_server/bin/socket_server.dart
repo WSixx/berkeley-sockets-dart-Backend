@@ -24,17 +24,15 @@ class Server{
   }
 
   Future<void> connect() async {
-    final clientConnected = ClientConnected();
     // bind the socket server to an address and port
     final server = await ServerSocket.bind(InternetAddress.anyIPv4, 3320);
-
     // listen for clent connections to the server
       server.isBroadcast;
       server.listen((client) {
-        //handleConnection(client,clientConnected);
         print('Conexão aceita ' + client.remotePort.toString());
         var worker = ServerWorker(this, client);
         workerList.add(worker);
+        worker;
       });
   }
 
