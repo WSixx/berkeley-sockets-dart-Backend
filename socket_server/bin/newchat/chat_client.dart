@@ -7,7 +7,7 @@ class ChatClient {
   Socket _socket;
   String _address;
   int _port;
-  List<String> _login = [];
+  final List<String> _login = [];
 
   ChatClient(Socket s){
     _socket = s;
@@ -26,21 +26,15 @@ class ChatClient {
         i: split[i]
     };
     var sendTo = values[1];
-    var body = values[2];
-    var workerList = getChatList();
-    /*for (var c in workerList){
-      if(sendTo.contains(getLogin())){
-        print('Entrou aqui');
-        var outMsg = 'msg ' + getLogin() + ' ' + body + '\n';
-        //c.distributeMessage(client, outMsg);
-        c.write(outMsg);
-      }
-    }*/
+    var body = split.sublist(2);
+    var finalStr = body.reduce((value, element) {
+      return value + ' ' + element;
+    });
     for (var c in clients) {
       if (c != client){
         print(c._login.length);
         if(c._login.contains(sendTo)){
-          c.write(body + '\n');
+          c.write(finalStr + '\n');
         }
       }
     }
